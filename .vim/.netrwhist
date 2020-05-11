@@ -1,0 +1,9 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhist_cnt =7
+let g:netrw_dirhist_1='/home/lucky/backup/cmake/t2/build/bin'
+let g:netrw_dirhist_2='/home/lucky/backup/cmake/t3/build/src/CMakeFiles'
+let g:netrw_dirhist_3='/home/lucky/HttpWebServer'
+let g:netrw_dirhist_4='/home/lucky/test/myTest/src'
+let g:netrw_dirhist_5='/home/lucky/test/myTest'
+let g:netrw_dirhist_6='/home/lucky/HttpWebServer'
+let g:netrw_dirhist_7='/home/lucky/test-CI'
