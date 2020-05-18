@@ -63,16 +63,19 @@ Plugin 'vim-airline/vim-airline-themes'
 Plugin 'auto-pairs'
 Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'Valloric/YouCompleteMe'
+Plugin 'w0rp/ale'
+Plugin 'vim-cpp-enhanced-highlight'
+Plugin 'skywind3000/asyncrun.vim'
+"Plugin 'dense-analysis/ale'
 call vundle#end()
 
 "----------------------------YouCompleteMe-----------------------------
 "----------------------------------------------------------------------
-
 let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/YouCompleteMe/cpp/ycm/.ycm_extra_conf.py'
 let g:ycm_autoclose_preview_window_after_completion=0
 let g:ycm_autoclose_preview_window_after_insertion=1
 let g:ycm_add_preview_to_completeopt = 0
-" let g:ycm_show_diagnostics_ui = 0 "关闭代码诊断
+"let g:ycm_show_diagnostics_ui = 0 "关闭代码诊断
 let g:ycm_server_log_level = 'info'
 let g:ycm_min_num_identifier_candidate_chars = 2
 let g:ycm_collect_identifiers_from_comments_and_strings = 1
@@ -106,7 +109,6 @@ let g:ctrlp_mruf_max=500
 let g:ctrlp_follow_symlinks=1
 "-----------------------------------------------------------------------
 "-----------------------------------------------------------------------
-
 
 "--------------------------------NERDTree -----------------------------
 "----------------------------------------------------------------------
@@ -147,11 +149,69 @@ let g:NERDTreeIndicatorMapCustom = {
 "----------------------------------------------------------------------
 "----------------------------------------------------------------------
 
+"-------------------------------ale------------------------------------
+"----------------------------------------------------------------------
+let g:ale_linters_explicit = 1
+let g:ale_linters = {
+  \   'csh': ['shell'],
+  \   'zsh': ['shell'],
+  \   'go': ['gofmt', 'golint'],
+  \   'python': ['flake8', 'mypy', 'pylint'],
+  \   'c': ['gcc', 'cppcheck'],
+  \   'cpp': ['gcc', 'cppcheck'],
+  \   'text': [],
+  \}
+let g:ale_completion_delay = 500
+let g:ale_echo_delay = 20
+let g:ale_lint_delay = 500
+let g:ale_echo_msg_format = '[%linter%] %code: %%s'
+let g:ale_lint_on_text_changed = 'normal'
+let g:ale_lint_on_insert_leave = 1
+let g:airline#extensions#ale#enabled = 1
+let g:ale_c_gcc_options = '-Wall -O2 -std=c99'
+let g:ale_cpp_gcc_options = '-Wall -O2 -std=c++11'
+let g:ale_c_cppcheck_options = ''
+let g:ale_cpp_cppcheck_options = ''
+let g:ale_list_window_size = 5
+"----------------------------------------------------------------------
+"----------------------------------------------------------------------
+
+"-----------------------vim-cpp-enhanced-highlight---------------------
+"----------------------------------------------------------------------
+let g:cpp_class_scope_highlight = 1
+let g:cpp_member_variable_highlight = 1
+let g:cpp_class_decl_highlight = 1
+let g:cpp_posix_standard = 1
+let g:cpp_experimental_template_highlight = 1
+let g:cpp_concepts_highlight = 1
+let g:cpp_no_function_highlight = 1
+"----------------------------------------------------------------------
+"----------------------------------------------------------------------
+
+"-------------------------echodoc--------------------------------------
+"----------------------------------------------------------------------
+let g:echodoc#type = "echo" " Default value
+set noshowmode
+let g:echodoc_enable_at_startup = 1
+"----------------------------------------------------------------------
+"----------------------------------------------------------------------
+
+"------------------------asynsrun--------------------------------------
+"----------------------------------------------------------------------
+" 自动打开 quickfix window ，高度为 6
+let g:asyncrun_open = 6
+" 任务结束时候响铃提醒
+let g:asyncrun_bell = 1
+" 设置 F10 打开/关闭 Quickfix 窗口
+nnoremap <F10> :call asyncrun#quickfix_toggle(6)<cr>
+"----------------------------------------------------------------------
+"----------------------------------------------------------------------
+
 "-------------------------主题设置-------------------------------------
 set t_Co=256            "在windows中用xshell等连接打开vim可以显示色彩
 let g:airline#extensions#tabline#enabled = 1         "显示tab/buf窗口
 let g:airline_theme='simple'
-let g:airline_theme='molokai'
+"let g:airline_theme='molokai'
 let g:airline#extensions#tabline#enabled = 1
 "----------------------------------------------------------------------
 
@@ -163,6 +223,6 @@ let g:airline#extensions#tabline#enabled = 1
 :let hs_highlight_debug=1                 " 高亮调试函数的名字
 :let hs_allow_hash_operator=1             " 阻止把#高亮为错误
 "------------------------------------------------------------------------
-let g:syntastic_cpp_compiler = 'g++'  "change the compiler to g++ to support c++11.
-let g:syntastic_cpp_compiler_options = '-std=c++11 -stdlib=libc++' "set the options of g++ to suport c++11.
+"let g:syntastic_cpp_compiler = 'g++'  "change the compiler to g++ to support c++11.
+"let g:syntastic_cpp_compiler_options = '-std=c++11 -stdlib=libc++' "set the options of g++ to suport c++11.
 
