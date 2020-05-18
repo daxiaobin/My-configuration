@@ -1,201 +1,168 @@
-"----------------------------"
-"----------Vundle------------"
-"----------------------------"
-set nocompatible
-filetype off
-
-" set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#rc()
-
-" Let Vundle manage itself
-Plugin 'VundleVim/Vundle.vim'
-
-Plugin 'ctrlpvim/ctrlp.vim'
-"Plugin 'scrooloose/syntastic'
-Plugin 'Valloric/YouCompleteMe'
-
-call vundle#end()
-filetype plugin indent on
-
-
-let g:auto_save = 1
-
-"----------------------------"
-"--------   NERDTree  -------"
-"----------------------------"
-"set shortcut key
-"map <F4> :NERDTreeMirror<CR>
-"map <F4> :NERDTreeToggle<CR>
-
-"----------------------------"
-"--------    CtrlP    -------"
-"----------------------------"
-let g:ctrlp_map = ',,'
-let g:ctrlp_open_multiple_files = 'v'
-
-set wildignore+=*/tmp/*,*.so,*.swp,*.zip
-let g:ctrlp_custom_ignore = {
-  \ 'dir':  '\v[\/]\.(git)$',
-  \ 'file': '\v\.(log|jpg|png|jpeg)$',
-  \ }
-
-
-"----------------------------"
-"--------  Syntastic  -------"
-"----------------------------"
-"set statusline+=%#warningmsg#
-"set statusline+=%{SyntasticStatuslineFlag()}
-"set statusline+=%*
-"let g:syntastic_always_populate_loc_list = 1
-"let g:syntastic_auto_loc_list = 1
-"let g:syntastic_check_on_open = 1
-"let g:syntastic_check_on_wq = 0
-"let b:syntastic_cpp_cflags = '-std=c++11 -w'
-
-"----------------------------"
-"------ YouCompleteMe -------"
-"----------------------------"
-let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/YouCompleteMe/cpp/ycm/.ycm_extra_conf.py'
-
-"----------------------------"
-"--------Global Config-------"
-"----------------------------"
-syntax on
-set nu
-"设置主题颜色
-set background=dark
-"colorscheme solarized
-colorscheme molokai
-"colorscheme darkblue
-"colorscheme default
-let g:molokai_original = 1
-let g:rehash256 = 1
-
-
-set noswapfile
-set nobackup
-if has('mouse')
-	set mouse-=a
-endif
-
+" 设置leader键，leader键就是一个自定义的前缀键，可以用来个性化定义一些命令
+let mapleader=" " 
+syntax on "语法高亮
+let &t_ut=''
 filetype on
-
-set history=1000
-set cursorline
-"set cursorcolumn
-
-set autoindent
-set cindent
-set smartindent
-
-"set expandtab " space grid replace tab
-set backspace=2
+filetype plugin indent on
+set backspace=2 "解决插入模式下delete/backspce键失效问题
+set background=dark
+set nocompatible "去除和vi的不一致性
+set fileencodings=utf-8,gb2312,gbk,gb18030
+set termencoding=utf-8
+set encoding=utf-8
+set expandtab
 set tabstop=4
 set shiftwidth=4
 set softtabstop=4
-
-set linebreak
-set showmatch
-
-set fileencodings=utf-8,gb2312,gbk,gb18030
-set termencoding=utf-8
-"set fileformats=unix
-"set encoding=prc
-set encoding=utf-8
-
-set hlsearch
-set incsearch
-
+set number
 set laststatus=2
-set ruler
+if has('mouse')
+    set mouse-=a
+endif
+"使得下次打开同一文件时光标处于上次关闭文件时的位置
+au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal!g'\"" | endif
+set cursorline
+set showcmd
+set wildmenu "在vim中按 :xx 后再按tab键会显示可选的菜单
+set ignorecase "搜索时忽略大小写
+set smartcase "搜索时智能大小写
+set hlsearch "搜索时高亮显示
+set incsearch "搜索时一边输入字符一边高亮显示
+"这个命令的意思是在命令模式下按 : 然后输入nohlsearch就可以取消高亮
+exec "nohlsearch" 
+"设置空格+enter取消高亮
+noremap <LEADER><CR> :nohlsearch<CR>  "noremap a b  将a键替换为b键，nore是不用递归的意思
 
-"no \n
-set nowrap
-set guifont=Courier\ new:h20
+map S :w<CR>
+map Q :q<CR>
+"以下四行是分屏操作，分屏后切换光标按ctrl+w+[上下左右]
+map sr :set splitright<CR>:vsplit<CR>
+map sl :set nosplitright<CR>:vsplit<CR>
+map st :set nosplitbelow<CR>:split<CR>
+map sb :set splitbelow<CR>:split<CR>
+map <LEADER>j <C-w>j
+map <LEADER>k <C-w>k
+map <LEADER>h <C-w>h
+map <LEADER>l <C-w>l 
+map c<UP> :res +5<CR>
+map c<DOWN> :res -5<CR>
+map c<LEFT> :vertical resize-5<CR>
+map c<RIGHT> :vertical resize+5<CR>
+map R :source $MYVIMRC<CR>
 
-autocmd BufNewFile *.[ch],*.hpp,*.cpp,*.cc exec ":call Addreadme()"
+"-----------------插件相关----------------------------------------------
+set rtp+=~/.vim/bundle/Vundle.vim "设置包括vundle和初始化相关的runtime path
+call vundle#begin()
+Plugin 'VundleVim/Vundle.vim'
+Plugin 'vim-airline/vim-airline'
+Plugin 'connorholyday/vim-snazzy'
+Plugin 'preservim/nerdtree'
+Plugin 'Xuyuanp/nerdtree-git-plugin'
+Plugin 'jistr/vim-nerdtree-tabs'
+Plugin 'vim-airline/vim-airline-themes'
+Plugin 'auto-pairs'
+Plugin 'ctrlpvim/ctrlp.vim'
+Plugin 'Valloric/YouCompleteMe'
+call vundle#end()
 
-function Addreadme()
-"    call setline(1, " ///")
-	call setline(1, " /// @file    " .expand("%:t"))
-	call append(1, " /// @author  daxiaobing(248918860@qq.com)")
-	call append(2, " /// @date    ".strftime("%Y-%m-%d %H:%M:%S"))
-	call append(4, " ///")
-	call append(3, " ")
-	call append(4, "#include <iostream>")
-	call append(5, "using std::cout;")
-	call append(6, "using std::endl;")
-endf
+"----------------------------YouCompleteMe-----------------------------
+"----------------------------------------------------------------------
+
+let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/YouCompleteMe/cpp/ycm/.ycm_extra_conf.py'
+let g:ycm_autoclose_preview_window_after_completion=0
+let g:ycm_autoclose_preview_window_after_insertion=1
+let g:ycm_add_preview_to_completeopt = 0
+" let g:ycm_show_diagnostics_ui = 0 "关闭代码诊断
+let g:ycm_server_log_level = 'info'
+let g:ycm_min_num_identifier_candidate_chars = 2
+let g:ycm_collect_identifiers_from_comments_and_strings = 1
+let g:ycm_complete_in_strings=1
+let g:ycm_key_invoke_completion = '<c-z>'
+set completeopt=menu,menuone
+
+noremap <c-z> <NOP>
+
+let g:ycm_semantic_triggers =  {
+           \ 'c,cpp,python,java,go,erlang,perl': ['re!\w{2}'],
+           \ 'cs,lua,javascript': ['re!\w{2}'],
+           \ }
+"----------------------------------------------------------------------
+"----------------------------------------------------------------------
+
+"------------------------------------ctrlp-----------------------------
+"----------------------------------------------------------------------
+set wildignore+=*/tmp/*,*.so,*.swp,*.zip
+let g:ctrlp_map = ',,'  "模糊搜索当前目录极其子目录下的所有文件
+map ,f :CtrlPMRU<CR>    
+"ctrl + j/k  # 进行上下选择
+"ctrl + x    # 在当前窗口水平分屏打开文件
+"ctrl + v    # 同上, 垂直分屏
+"ctrl + t    # 在tab中打开
+let g:ctrlp_working_path_mode=0
+let g:ctrlp_match_window_bottom=1
+let g:ctrlp_max_height=15
+let g:ctrlp_match_window_reversed=0
+let g:ctrlp_mruf_max=500
+let g:ctrlp_follow_symlinks=1
+"-----------------------------------------------------------------------
+"-----------------------------------------------------------------------
 
 
-"set maplearder
-"let  mapleader = ";"
-nmap <Leader>M %
-map <silent> <leader>ee :!vim ~/.vimrc<cr>
+"--------------------------------NERDTree -----------------------------
+"----------------------------------------------------------------------
+map <LEADER>n :NERDTreeToggle<CR> "打开NEARTree
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree())|q|endif
+autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | exe 'cd '.argv()[0] | endif
+let g:NERDTreeDirArrowExpandable = '>'
+let g:NERDTreeDirArrowExpandable = ''
+let g:NERDTreeDirArrowCollapsible = ''
 
+" 显示行号
+let NERDTreeShowLineNumbers=1
+let NERDTreeAutoCenter=1
+" 是否显示隐藏文件
+let NERDTreeShowHidden=1
+" 设置宽度
+let NERDTreeWinSize=31
+" 在终端启动vim时，共享NERDTree
+let g:nerdtree_tabs_open_on_console_startup=1
+" 忽略一下文件的显示
+let NERDTreeIgnore=['\.pyc','\~$','\.swp']
+" 显示书签列表
+let NERDTreeShowBookmarks=1
 
-"让配置变更立即生效
-autocmd BufwritePost $MYVIMRC source $MYVIMRC
+let g:NERDTreeIndicatorMapCustom = {
+    \ "Modified"  : "✹",
+    \ "Staged"    : "✚",
+    \ "Untracked" : "✭",
+    \ "Renamed"   : "➜",
+    \ "Unmerged"  : "═",
+    \ "Deleted"   : "✖",
+    \ "Dirty"     : "✗",
+    \ "Clean"     : "✔︎",
+    \ "Unknown"   : "?"
+    \ }
+"----------------------------------------------------------------------
+"----------------------------------------------------------------------
 
-
-"定义快捷键到行首和行尾
-nmap LE $
-nmap LB ^
-
-"开启实时搜索功能
-"set incsearch
-"搜索时大小写不敏感
-"set ignorecase
-"关闭兼容模式
-"set nocompatible
-"vim自身命令行智能补全
-"set wildmenu
-
-Plugin 'vim-airline'           "状态栏插件"
-set laststatus=2                      "永远显示状态栏"
-set t_Co=256                                   "在windows中用xshell连接打开vim可以显示色彩"
-let g:airline#extensions#tabline#enabled = 1            "显示tab/buf窗口"
-Plugin 'vim-airline-themes'                                       "状态栏主题插件"
+"-------------------------主题设置-------------------------------------
+set t_Co=256            "在windows中用xshell等连接打开vim可以显示色彩
+let g:airline#extensions#tabline#enabled = 1         "显示tab/buf窗口
 let g:airline_theme='simple'
+let g:airline_theme='molokai'
+let g:airline#extensions#tabline#enabled = 1
+"----------------------------------------------------------------------
 
-Plugin 'axiaoxin/favorite-vim-colorscheme'                "颜色主题插件"
-
-Plugin 'auto-pairs'                         "符号自动配对插件"
-
-"基于缩进或语法进行代码折叠
-set foldmethod=indent
-"set foldmethod=syntax
-set nofoldenable       "启动vim时关闭折叠"
-
-let g:syntastic_cpp_compiler = 'g++'  "change the compiler to g++ to support c++11."
-let g:syntastic_cpp_compiler_options = '-std=c++11 -stdlib=libc++' "set the options of g++ to suport c++11."
-
-"当光标一段时间保持不动了，就禁用高亮
-"autocmd cursorhold * set nohlsearch
-"当输入查找命令时，再启用高亮
-"noremap n :set hlsearch<cr>n
-"noremap N :set hlsearch<cr>N
-"noremap / :set hlsearch<cr>/
-"noremap ? :set hlsearch<cr>?
-"noremap * *:set hlsearch<cr>"
-
-noremap n :set hlsearch<cr>n
-noremap N :set hlsearch<cr>N
-noremap / :set hlsearch<cr>/
-noremap ? :set hlsearch<cr>?
-noremap * *:set hlsearch<cr>
-
-nnoremap <c-h> :call DisableHighlight()<cr>
-function! DisableHighlight()
-	set nohlsearch
-endfunc
-"上述部分是设置按ctrl+H取消高亮搜索显示。
-
-" For Haskell
+"---------------------------For Haskell--------------------------------
 :let hs_highlight_delimiters=1            " 高亮定界符
 :let hs_highlight_boolean=1               " 把True和False识别为关键字
 :let hs_highlight_types=1                 " 把基本类型的名字识别为关键字
 :let hs_highlight_more_types=1            " 把更多常用类型识别为关键字
 :let hs_highlight_debug=1                 " 高亮调试函数的名字
 :let hs_allow_hash_operator=1             " 阻止把#高亮为错误
+"------------------------------------------------------------------------
+let g:syntastic_cpp_compiler = 'g++'  "change the compiler to g++ to support c++11.
+let g:syntastic_cpp_compiler_options = '-std=c++11 -stdlib=libc++' "set the options of g++ to suport c++11.
+
